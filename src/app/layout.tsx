@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ClerkProvider } from "@clerk/nextjs";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { TRPCReactProvider } from "@/trpc/client";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -30,16 +31,18 @@ export default function RootLayout({
 }>) {
     return (
         <ClerkProvider>
-            <html lang="en">
-                <body
-                className={`${inter.variable} ${geistMono.variable} antialiased`}
-                >
-                    <TooltipProvider>
-                        {children}
-                    </TooltipProvider>
-                    <Toaster/>
-                </body>
-            </html>
+            <TRPCReactProvider>
+                <html lang="en">
+                    <body
+                    className={`${inter.variable} ${geistMono.variable} antialiased`}
+                    >
+                        <TooltipProvider>
+                            {children}
+                        </TooltipProvider>
+                        <Toaster/>
+                    </body>
+                </html>
+            </TRPCReactProvider>
         </ClerkProvider>
     );
 }

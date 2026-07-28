@@ -9,6 +9,8 @@ export const env = createEnv({
         B2_KEY_ID: z.string().min(1),
         B2_APPLICATION_KEY: z.string().min(1),
         B2_BUCKET_NAME: z.string().min(1),
+        CHATTERBOX_API_URL: z.url(),
+        CHATTERBOX_API_KEY: z.string().min(1),
     },
     experimental__runtimeEnv: {},
     skipValidation: !!process.env.SKIP_ENV_VALIDATION,

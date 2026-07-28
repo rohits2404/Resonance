@@ -2,20 +2,22 @@
 
 import { Coins } from "lucide-react";
 import { useSelector } from "@tanstack/react-form";
-
+import { SettingsDrawer } from "./settings-drawer";
+import { HistoryDrawer } from "./history-drawer";
+import { VoiceSelectorButton } from "./voice-selector-button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { useTypedAppFormContext } from "@/hooks/use-app-form";
-
 import { 
   COST_PER_UNIT, 
   TEXT_MAX_LENGTH
 } from "@/features/text-to-speech/data/constants";
 import { ttsFormOptions } from "./text-to-speech-form";
 import { GenerateButton } from "./generate-button";
+import { PromptSuggestions } from "./prompt-suggestions";
 
 export function TextInputPanel() {
-  
+
     const form = useTypedAppFormContext(ttsFormOptions);
 
     const text = useSelector(form.store, (s) => s.values.text);
@@ -45,6 +47,12 @@ export function TextInputPanel() {
             <div className="shrink-0 p-4 lg:p-6">
                 {/* Mobile layout */}
                 <div className="flex flex-col gap-3 lg:hidden">
+                    <div className="flex items-center gap-2">
+                        <SettingsDrawer>
+                            <VoiceSelectorButton />
+                        </SettingsDrawer>
+                        <HistoryDrawer />
+                    </div>
                     <GenerateButton
                         className="w-full"
                         disabled={isSubmitting}
@@ -65,25 +73,25 @@ export function TextInputPanel() {
                             </span>
                         </Badge>
                         <div className="flex items-center gap-3">
-                        <p className="text-xs tracking-tight">
-                            {text.length.toLocaleString()}
-                            <span className="text-muted-foreground">
-                                &nbsp;/&nbsp;{TEXT_MAX_LENGTH.toLocaleString()} Characters
-                            </span>
-                        </p>
-                        <GenerateButton
-                            size="sm"
-                            disabled={isSubmitting || !isValid}
-                            isSubmitting={isSubmitting}
-                            onSubmit={() => form.handleSubmit()}
-                        />
+                            <p className="text-xs tracking-tight">
+                                {text.length.toLocaleString()}
+                                <span className="text-muted-foreground">
+                                    &nbsp;/&nbsp;{TEXT_MAX_LENGTH.toLocaleString()} Characters
+                                </span>
+                            </p>
+                            <GenerateButton
+                                size="sm"
+                                disabled={isSubmitting || !isValid}
+                                isSubmitting={isSubmitting}
+                                onSubmit={() => form.handleSubmit()}
+                            />
                         </div>
                     </div>
                 ) : (
                     <div className="hidden lg:block">
-                        <p className="text-sm text-muted-foreground">
-                            Get Started By Typing Or Pasting Text Above
-                        </p>
+                        <PromptSuggestions
+                        onSelect={(prompt) => form.setFieldValue("text", prompt)}
+                        />
                     </div>
                 )}
             </div>
